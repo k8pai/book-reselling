@@ -22,15 +22,15 @@ export default async function RootLayout({
 
 	return (
 		<html lang="en">
-			<Provider>
-				<body className={inter.className}>
+			<body className={inter.className}>
+				<Provider>
 					<main className="min-h-screen flex flex-col ">
 						<Header user={session?.user} />
 						<Workflow />
 						{children}
 					</main>
-				</body>
-			</Provider>
+				</Provider>
+			</body>
 		</html>
 	);
 }
