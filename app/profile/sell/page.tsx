@@ -140,7 +140,7 @@ export default function Page() {
 	};
 
 	return (
-		<div className="flex-grow flex items-center justify-center">
+		<div className="flex-grow flex items-center justify-center py-10">
 			<Card
 				color="transparent"
 				className="p-10 rounded-lg border border-slate-700"

@@ -231,7 +231,8 @@ export function Header() {
 						className="p-1 font-medium"
 					>
 						<Link
-							href="/cart"
+							href=""
+							aria-disabled="true"
 							className="flex items-center hover:text-blue-500 transition-colors"
 						>
 							Cart
