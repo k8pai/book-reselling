@@ -1,4 +1,4 @@
-import { bookFilterFields, filterCategories } from '@/typings';
+import { bookFilterFields, Categories } from '@/typings';
 
 export function mansoryGrid(
 	arr: Array<any> = [],
@@ -40,7 +40,7 @@ export const createWorkflow = (arr = '/') => {
 	return resultArray;
 };
 
-export const getField = (str: filterCategories): bookFilterFields => {
+export const getField = (str: Categories): bookFilterFields => {
 	switch (str) {
 		case 'genres':
 			return 'genre';

@@ -6,9 +6,10 @@ Welcome to the documentation for the Book Reselling Website built with Next.js! 
 
 1. [Getting Started](#getting-started)
 2. [Features](#features)
-3. [Technologies Used](#technologies-used)
-4. [Contributing](#contributing)
-5. [License](#license)
+3. [Project Structure](#project-structure)
+4. [Technologies Used](#technologies-used)
+5. [Contributing](#contributing)
+6. [License](#license)
 
 ## Getting Started
 
@@ -82,6 +83,57 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 -   Add ons...
     -   Sellers can Delete the post that they added.
     -   ...
+
+## Project Structure
+
+There are a couple of folders in the project like `/app`, `/components`, `/lib`, `/prisma`, `/public` and `/types`. All are explained in detail below. It would be helpful to understand how Nextjs works, if youre new to it!
+
+```
+Route (app)
+┌ λ /
+├ ○ /_not-found
+├ λ /api/auth/[...nextauth]
+├ ○ /api/books
+├ λ /api/books/[id]
+├ λ /api/listbook
+├ λ /api/register
+├ λ /api/sellings/[id]
+├ ○ /login
+├ ○ /product
+├ λ /product/[id]
+├ λ /profile
+├ ○ /profile/sell
+└ ○ /signup
+
+○  (Static)   prerendered as static HTML
+λ  (Dynamic)  server-rendered on demand using Node.js
+
+Route (components)
+┌ ✧ /primitives
+└ ✧ /ui
+
+✧  (Client Components)   Rendered as on the client side.
+
+Route (lib)
+┌ :･ﾟ /auth
+├ ◕  /data
+└ ✪  /prisma
+
+:･ﾟ - Contains auth config files for login and authentication.
+◕  - Data for mocking database fetch for fields like filter, sortby etc.
+✪  - Prisma singleton initialization file.
+
+Route (root)
+┌ :･ﾟ /...
+├ ⌁  /prisma
+├ ⌀  /public
+└ ⁙  /types
+
+:･ﾟ - Rest of the defined folders (already mentioned).
+⌁  - Contains schema models of prisma client.
+⌀  - Usual public folder for assets and global accessible files.
+⁙  - type configurations for authorization callbacks and sessions.
+```
 
 ## Technologies Used
 
