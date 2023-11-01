@@ -10,26 +10,25 @@ import {
 	MenuHandler,
 	MenuItem,
 } from '@material-tailwind/react';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import {
 	ChevronDownIcon,
 	UserCircleIcon,
 	PlusIcon,
 } from '@heroicons/react/20/solid';
-import { Skeleton } from '../ui/Skeleton';
+import { Session } from 'next-auth';
 
-export function Header() {
-	const { data: session, status } = useSession();
-
+export function Header({ user }: { user: Session['user'] | undefined }) {
 	// console.log(`status = ${status}, session => ${session}`);
 
 	const NavLinks = useCallback(() => {
 		const [openMenu, setOpenMenu] = useState(false);
 
-		if (status === 'loading') {
-			return <Skeleton className="w-[100px] h-[35px] rounded-md" />;
-		} else if (status === 'authenticated' && session) {
+		// if (status === 'loading') {
+		// 	return <Skeleton className="w-[100px] h-[35px] rounded-md" />;
+		// } else
+		if (user) {
 			return (
 				<Menu
 					placement="bottom-end"
@@ -68,8 +67,7 @@ export function Header() {
 								</Typography>
 							</MenuItem>
 						</Link>
-						<hr className="my-2" />
-						{session.user.accountType === 'seller' ? (
+						{user.accountType === 'seller' ? (
 							<Link
 								href={`/profile`}
 								className="outline-none hover:outline-none whitespace-nowrap"
@@ -95,7 +93,7 @@ export function Header() {
 								</MenuItem>
 							</Link>
 						) : null}
-						{session.user.accountType === 'seller' ? (
+						{user.accountType === 'seller' ? (
 							<Link
 								href={'/profile/sell'}
 								className="outline-none hover:outline-none"
@@ -161,7 +159,7 @@ export function Header() {
 				</div>
 			);
 		}
-	}, [session, status]);
+	}, [user]);
 
 	return (
 		<Navbar className="mx-auto max-w-full px-4 py-2 rounded-lg lg:px-8 lg:py-4">
@@ -188,7 +186,7 @@ export function Header() {
 							Home
 						</Link>
 					</Typography>
-					{session?.user.accountType === 'seller' ? (
+					{user && user.accountType === 'seller' ? (
 						<Typography
 							as="li"
 							variant="small"

@@ -24,7 +24,3 @@ export default async function Home() {
 		</section>
 	);
 }
-
-// <<section className="container mx-auto py-6">
-// <SearchFilter books={contents} />
-// </section>>
