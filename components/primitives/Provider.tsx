@@ -2,7 +2,6 @@
 
 import { ThemeProvider } from '@material-tailwind/react';
 import { SessionProvider } from 'next-auth/react';
-import { usePathname } from 'next/navigation';
 import React, { ReactNode, useEffect } from 'react';
 
 const Provider = ({ children }: { children: ReactNode }) => {

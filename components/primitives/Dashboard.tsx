@@ -10,12 +10,15 @@ import {
 	TabPanel,
 	TabPanels,
 	Text,
+	TextInput,
 	Title,
 } from '@tremor/react';
+// import { TextInput } from '@tremor/react';
+
 import Sellings from './Sellings';
 import { Books } from '@prisma/client';
 import { Session } from 'next-auth';
-import { Typography } from '@material-tailwind/react';
+// import { Typography } from '@material-tailwind/react';
 
 const Dashboard = ({
 	data,
@@ -30,6 +33,10 @@ const Dashboard = ({
 		() => session?.user.accountType === 'seller',
 		[session],
 	);
+
+	const {
+		user: { accountType, email, name, id },
+	} = session;
 
 	return (
 		<main className="p-12">
@@ -50,27 +57,71 @@ const Dashboard = ({
 							numItemsLg={3}
 							className="gap-6 mt-6"
 						>
-							<Card>
-								{/* Placeholder to set height */}
-								<div className="h-28" />
+							<Card className="space-y-5">
+								<div className="space-y-3">
+									<span>Name</span>
+									<TextInput
+										placeholder={name ?? ''}
+										disabled={true}
+										className="rounded-md w-full max-w-xl"
+									/>
+								</div>
+								<div className="space-y-3">
+									<span>User ID</span>
+									<TextInput
+										placeholder={id ?? ''}
+										disabled={true}
+										className="rounded-md w-full max-w-xl"
+									/>
+								</div>
 							</Card>
 							<Card>
-								{/* Placeholder to set height */}
-								<div className="h-28" />
+								<div className="space-y-3">
+									<span>Email</span>
+									<TextInput
+										placeholder={email ?? ''}
+										disabled={true}
+										className="rounded-md w-full max-w-xl"
+									/>
+								</div>
 							</Card>
 							<Card>
-								{/* Placeholder to set height */}
-								<div className="h-28" />
+								<div className="space-y-3">
+									<span>Account Type</span>
+									<TextInput
+										placeholder={accountType ?? ''}
+										disabled={true}
+										className="rounded-md w-full max-w-xl"
+									/>
+								</div>
 							</Card>
 						</Grid>
-						<div>
-							<Typography
-								variant={'h4'}
-								className="font-semibold font-serif"
-							>
-								Profile Information
-							</Typography>
-						</div>
+						{/* <div className="space-y-6">
+							<div className="space-y-3">
+								<span>Name</span>
+								<TextInput
+									placeholder={name ?? ''}
+									disabled={true}
+									className="rounded-md w-full max-w-xl"
+								/>
+							</div>
+							<div className="space-y-3">
+								<span>Email</span>
+								<TextInput
+									placeholder={email ?? ''}
+									disabled={true}
+									className="rounded-md w-full max-w-xl"
+								/>
+							</div>
+							<div className="space-y-3">
+								<span>Account Type</span>
+								<TextInput
+									placeholder={accountType ?? ''}
+									disabled={true}
+									className="rounded-md w-full max-w-xl"
+								/>
+							</div>
+						</div> */}
 						<div className="mt-6">
 							{isSeller() && (
 								<Sellings
