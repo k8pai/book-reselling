@@ -5,8 +5,10 @@ export const dynamic = 'force-dynamic';
 const fetchData = async (): Promise<any> => {
 	const response = await fetch(`${process.env.NEXTAUTH_URL}/api/books`, {
 		next: { revalidate: 1, tags: ['books'] },
+		cache: 'no-store',
 	});
 	const data = await response.json();
+	console.log(`data from '/books' => `, data);
 
 	return { ...data };
 };

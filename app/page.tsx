@@ -9,6 +9,8 @@ const fetchData = async (): Promise<any> => {
 	});
 	const data = await response.json();
 
+	console.log(`data from '/' => `, data);
+
 	return { ...data };
 };
 

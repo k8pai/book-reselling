@@ -1,11 +1,7 @@
 'use client';
 
 import React from 'react';
-import { BookDataType } from './BookCard';
 import { Button, Typography } from '@material-tailwind/react';
-import { Card, CategoryBar, Divider, Flex, Legend, Text } from '@tremor/react';
-import { BookPost } from '@/typings';
-import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { ph } from '@/lib/helper';
 import { Badge } from '../ui/Badge';
 import { Books, User } from '@prisma/client';
@@ -187,8 +183,8 @@ export default function ProductDetails({
 
 	// console.log('data from ProductDetails => ', data);
 	return (
-		<section className="w-full py-12 md:py-24 lg:py-32">
-			<div className="container mx-auto flex flex-col lg:flex-row items-center md:items-start h-full gap-8 px-4 md:px-6">
+		<section className="w-full py-8 md:py-16 lg:py-24">
+			<div className="container mx-auto flex flex-col lg:flex-row items-center lg:items-start h-full gap-8 px-4 md:px-6">
 				<img
 					alt="Sneaker Image"
 					className="aspect-[1/1] object-cover object-center rounded-md w-[300px] h-[300px] xl:w-[500px] xl:h-[500px]"
@@ -268,9 +264,6 @@ export default function ProductDetails({
 						</div>
 
 						<Button className="w-full">Add to Cart</Button>
-						{/* <Button className="w-full h-12 rounded-md bg-zinc-900 text-zinc-50 shadow-sm dark:bg-zinc-50 dark:text-zinc-900">
-							Add to Cart
-						</Button> */}
 					</div>
 				</div>
 			</div>

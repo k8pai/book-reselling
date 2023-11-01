@@ -3,7 +3,6 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/primitives';
 import Provider from '@/components/primitives/Provider';
-import { usePathname, useRouter } from 'next/navigation';
 import { Workflow } from '@/components/ui/Breadcrumbs';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -20,15 +19,15 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<body className={inter.className}>
-				<Provider>
+			<Provider>
+				<body className={inter.className}>
 					<main className="min-h-screen flex flex-col ">
 						<Header />
 						<Workflow />
 						{children}
 					</main>
-				</Provider>
-			</body>
+				</body>
+			</Provider>
 		</html>
 	);
 }

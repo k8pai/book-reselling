@@ -7,6 +7,9 @@ const fetchData = async (id: string) => {
 		{ next: { revalidate: 10 } },
 	);
 	const data = await response.json();
+
+	console.log(`data from '/books/id' => `, data);
+
 	return data;
 };
 
