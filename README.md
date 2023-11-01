@@ -107,13 +107,17 @@ Route (app)
 
 ○  (Static)   prerendered as static HTML
 λ  (Dynamic)  server-rendered on demand using Node.js
+```
 
+```
 Route (components)
 ┌ ✧ /primitives
 └ ✧ /ui
 
 ✧  (Client Components)   Rendered as on the client side.
+```
 
+```
 Route (lib)
 ┌ :･ﾟ /auth
 ├ ◕  /data
@@ -122,7 +126,9 @@ Route (lib)
 :･ﾟ - Contains auth config files for login and authentication.
 ◕  - Data for mocking database fetch for fields like filter, sortby etc.
 ✪  - Prisma singleton initialization file.
+```
 
+```
 Route (root)
 ┌ :･ﾟ /...
 ├ ⌁  /prisma

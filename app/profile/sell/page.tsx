@@ -9,14 +9,12 @@ import {
 	Select,
 	Option,
 } from '@material-tailwind/react';
+import { revalidate } from '@/app/_actions';
 import { useSession } from 'next-auth/react';
 import toast, { Toaster } from 'react-hot-toast';
 import { redirect, useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { audiences, genres, themes, tones } from '@/lib/data';
-import { revalidatePath, revalidateTag } from 'next/cache';
-import { revalidate } from '@/app/_actions';
-import { Books } from '@prisma/client';
 
 type bookData = {
 	name: string;
@@ -104,6 +102,7 @@ export default function Page() {
 			},
 			body: JSON.stringify(contents),
 			next: { tags: ['books'] },
+			cache: 'no-store',
 		});
 
 		const postInfo = await response.json();

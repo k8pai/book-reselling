@@ -4,7 +4,7 @@ import React from 'react';
 const fetchData = async (id: string) => {
 	const response = await fetch(
 		`${process.env.NEXTAUTH_URL}/api/books/${id}`,
-		{ next: { revalidate: 10 } },
+		{ next: { tags: ['books'] }, cache: 'no-store' },
 	);
 	const data = await response.json();
 

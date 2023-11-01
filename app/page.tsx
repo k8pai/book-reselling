@@ -1,27 +1,30 @@
 import SearchFilter from '@/components/primitives/SearchFilter';
 import { Books } from '@prisma/client';
 
-// export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 
 const fetchData = async (): Promise<any> => {
 	const response = await fetch(`${process.env.NEXTAUTH_URL}/api/books`, {
-		next: { revalidate: 1, tags: ['books'] },
-		cache: 'no-store',
+		next: { tags: ['books'] },
 	});
 	const data = await response.json();
+	const contents: Books[] = data.data;
+	console.log(`data from '/' => `, contents.length);
 
-	console.log(`data from '/' => `, data);
-
-	return { ...data };
+	return contents;
 };
-
 export default async function Home() {
-	// console.log('data from home => ', data);
 	const contents = await fetchData();
 
+	console.log('contents => ', contents.length);
+
 	return (
-		<section className=" container mx-auto py-6">
-			<SearchFilter books={contents.data} />
+		<section className="container mx-auto py-6">
+			<SearchFilter books={contents} />
 		</section>
 	);
 }
+
+// <<section className="container mx-auto py-6">
+// <SearchFilter books={contents} />
+// </section>>

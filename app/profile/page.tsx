@@ -26,7 +26,7 @@ const fetchData = async () => {
 
 		const res = await fetch(
 			`${process.env.NEXTAUTH_URL}/api/sellings/${session?.user?.id}`,
-			{ next: { revalidate: 1, tags: ['books'] } },
+			{ next: { tags: ['books'] }, cache: 'no-store' },
 		);
 		const data: { data: Books[] } = await res.json();
 		return { data: data.data };

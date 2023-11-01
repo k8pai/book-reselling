@@ -15,21 +15,6 @@ export const DeleteSellingBook = async (id: string) => {
 	}
 };
 
-// export const createBookListing = async (contents) => {
-// 	const response = await fetch(`${process.env.NEXTAUTH_URL}/api/book`, {
-// 		method: 'POST',
-// 		headers: {
-// 			'Content-Type': 'application/json',
-// 		},
-// 		body: JSON.stringify(contents),
-// 	});
-
-// 	const postInfo = await response.json();
-// 	// console.log('postInfo => ', postInfo);
-// 	revalidatePath('/');
-// 	return postInfo;
-// };
-
 export const revalidate = async (path: string) => {
 	revalidateTag(path);
 };
