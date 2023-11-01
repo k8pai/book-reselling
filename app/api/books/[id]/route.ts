@@ -14,7 +14,7 @@ export async function GET(
 			},
 		});
 
-		// console.log('data => ', data);
+		console.log('data from /api/books/id => ', data);
 		return NextResponse.json(
 			{
 				data: data[0],

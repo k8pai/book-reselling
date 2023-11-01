@@ -14,7 +14,6 @@ const fetchData = async (): Promise<any> => {
 };
 
 export default async function Home() {
-	// console.log('data from home => ', data);
 	const contents = await fetchData();
 
 	return (

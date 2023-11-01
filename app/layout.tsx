@@ -22,7 +22,7 @@ export default function RootLayout({
 			<Provider>
 				<body className={inter.className}>
 					<main className="min-h-screen flex flex-col ">
-						<Header />
+						{/* <Header /> */}
 						<Workflow />
 						{children}
 					</main>

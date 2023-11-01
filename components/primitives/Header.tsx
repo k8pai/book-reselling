@@ -1,24 +1,19 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
 	Navbar,
-	MobileNav,
 	Typography,
 	Button,
-	IconButton,
 	Menu,
 	MenuList,
 	MenuHandler,
 	MenuItem,
-	Chip,
 } from '@material-tailwind/react';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import {
 	ChevronDownIcon,
-	ChevronUpIcon,
 	UserCircleIcon,
 	PlusIcon,
 } from '@heroicons/react/20/solid';
@@ -77,9 +72,9 @@ export function Header() {
 						{session.user.accountType === 'seller' ? (
 							<Link
 								href={`/profile`}
-								className="outline-none hover:outline-none"
+								className="outline-none hover:outline-none whitespace-nowrap"
 							>
-								<MenuItem className="flex items-center gap-2">
+								<MenuItem className="flex items-center gap-2 whitespace-nowrap">
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
 										viewBox="0 0 20 20"
@@ -93,7 +88,7 @@ export function Header() {
 
 									<Typography
 										variant="small"
-										className="font-medium"
+										className="font-medium whitespace-nowrap"
 									>
 										My Sellings
 									</Typography>
@@ -193,20 +188,22 @@ export function Header() {
 							Home
 						</Link>
 					</Typography>
-					<Typography
-						as="li"
-						variant="small"
-						color="blue-gray"
-						className="p-1 font-medium"
-					>
-						<Link
-							href="/profile"
-							className="flex items-center hover:text-blue-500 transition-colors"
+					{session?.user.accountType === 'seller' ? (
+						<Typography
+							as="li"
+							variant="small"
+							color="blue-gray"
+							className="p-1 font-medium whitespace-nowrap"
 						>
-							Sellings
-						</Link>
-					</Typography>
-					<Typography
+							<Link
+								href="/profile"
+								className="hover:text-blue-500 transition-colors whitespace-nowrap"
+							>
+								My Sellings
+							</Link>
+						</Typography>
+					) : null}
+					{/* <Typography
 						as="li"
 						variant="small"
 						color="blue-gray"
@@ -219,7 +216,7 @@ export function Header() {
 						>
 							Cart
 						</Link>
-					</Typography>
+					</Typography> */}
 					<NavLinks />
 				</div>
 			</div>

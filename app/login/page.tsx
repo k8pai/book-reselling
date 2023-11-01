@@ -41,7 +41,11 @@ export default function Page() {
 			redirect: false,
 		});
 
-		console.log(response);
+		if (!response?.ok) {
+			console.log('everythings fine');
+		}
+
+		console.log('logged in successfully');
 	};
 
 	return (
