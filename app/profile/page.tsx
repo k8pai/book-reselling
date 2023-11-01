@@ -4,6 +4,8 @@ import Dashboard from '../../components/primitives/Dashboard';
 import toast, { Toaster } from 'react-hot-toast';
 import { redirect } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 const fetchData = async () => {
 	try {
 		const session = await auth();
@@ -24,7 +26,7 @@ const fetchData = async () => {
 
 		const res = await fetch(
 			`${process.env.NEXTAUTH_URL}/api/sellings/${session?.user?.id}`,
-			{ next: { revalidate: 1 } },
+			{ next: { revalidate: 1, tags: ['books'] } },
 		);
 		const data: { data: Books[] } = await res.json();
 		return { data: data.data };

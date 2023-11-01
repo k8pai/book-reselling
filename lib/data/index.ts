@@ -5,13 +5,13 @@ import {
 	ToneValue,
 	Categories,
 	Values,
+	FilterValues,
 } from '@/typings';
 
 const audiences: {
 	name: string;
-	value: AudienceValue | 'all';
+	value: AudienceValue;
 }[] = [
-	{ name: 'None', value: 'all' },
 	{ name: 'Children', value: 'children' },
 	{ name: 'Middle Grade', value: 'middlegrade' },
 	{ name: 'Young Adult', value: 'youngadult' },
@@ -20,9 +20,8 @@ const audiences: {
 
 const themes: {
 	name: string;
-	value: ThemeValue | 'all';
+	value: ThemeValue;
 }[] = [
-	{ name: 'None', value: 'all' },
 	{ name: 'Good vs. Evil', value: 'goodvsevil' },
 	{ name: 'Love and Loss', value: 'loveandloss' },
 	{ name: 'Identity', value: 'identity' },
@@ -36,9 +35,8 @@ const themes: {
 
 const tones: {
 	name: string;
-	value: ToneValue | 'all';
+	value: ToneValue;
 }[] = [
-	{ name: 'None', value: 'all' },
 	{ name: 'Adventurous', value: 'adventurous' },
 	{ name: 'Dark', value: 'dark' },
 	{ name: 'Humorous', value: 'humorous' },
@@ -51,9 +49,8 @@ const tones: {
 
 const genres: {
 	name: string;
-	value: GenreValue | 'all';
+	value: GenreValue;
 }[] = [
-	{ name: 'None', value: 'all' },
 	{ name: 'Fantasy', value: 'fantasy' },
 	{ name: 'Mystery', value: 'mystery' },
 	{ name: 'Romance', value: 'romance' },
@@ -64,7 +61,6 @@ const genres: {
 	{ name: 'Non-fiction', value: 'nonfiction' },
 	{ name: 'Biography', value: 'biography' },
 	{ name: 'Self-help', value: 'selfhelp' },
-	{ name: 'Young Adult', value: 'youngadult' },
 ];
 
 export const sortOptions: Record<string, string>[] = [
@@ -81,16 +77,18 @@ const categories: {
 	}[];
 }[] = [
 	{ name: 'genres', data: genres },
-	{ name: 'audiences', data: genres },
-	{ name: 'themes', data: genres },
-	{ name: 'tones', data: genres },
+	{ name: 'audiences', data: audiences },
+	{ name: 'themes', data: themes },
+	{ name: 'tones', data: tones },
 ];
 
-const filters = {
-	audiences,
-	genres,
-	themes,
-	tones,
+type FilterOptions<T extends Values> = { name: string; value: T }[];
+
+const filters: Record<string, FilterOptions<Values>> = {
+	audiences: [{ name: 'None', value: 'all' }, ...audiences],
+	genres: [{ name: 'None', value: 'all' }, ...genres],
+	themes: [{ name: 'None', value: 'all' }, ...themes],
+	tones: [{ name: 'None', value: 'all' }, ...tones],
 };
 
 export { audiences, genres, themes, tones, categories, filters };

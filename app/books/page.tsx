@@ -1,5 +1,4 @@
 import SearchFilter from '@/components/primitives/SearchFilter';
-import { Books } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
 

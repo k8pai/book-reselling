@@ -18,6 +18,24 @@ import {
 } from '@tremor/react';
 import { DeleteSellingBook } from '../../app/_actions';
 import toast, { Toaster } from 'react-hot-toast';
+import { useFormStatus } from 'react-dom';
+
+function SubmitButton() {
+	const { pending } = useFormStatus();
+
+	return (
+		<Button
+			aria-disabled={pending}
+			color="red"
+			type="submit"
+			variant="destructive"
+			className="flex items-center space-x-2"
+		>
+			<span>Delete</span>
+			<TrashIcon className="h-4 w-4" />
+		</Button>
+	);
+}
 
 const Sellings = ({ data = [], error }: { data: Books[]; error: string }) => {
 	const handleDelete = async (id: Books['id']) => {
@@ -64,7 +82,7 @@ const Sellings = ({ data = [], error }: { data: Books[]; error: string }) => {
 					) : (
 						data &&
 						data.map((item) => (
-							<TableRow key={item.name}>
+							<TableRow key={item.id}>
 								<TableCell>{item.name}</TableCell>
 								<TableCell>
 									<Text>{item.author}</Text>
@@ -83,15 +101,7 @@ const Sellings = ({ data = [], error }: { data: Books[]; error: string }) => {
 
 								<TableCell>
 									<form action={() => handleDelete(item.id)}>
-										<Button
-											color="red"
-											type="submit"
-											variant="destructive"
-											className="flex items-center space-x-2"
-										>
-											<span>Delete</span>
-											<TrashIcon className="h-4 w-4" />
-										</Button>
+										<SubmitButton />
 									</form>
 								</TableCell>
 							</TableRow>
@@ -103,4 +113,5 @@ const Sellings = ({ data = [], error }: { data: Books[]; error: string }) => {
 		</Card>
 	);
 };
+
 export default Sellings;

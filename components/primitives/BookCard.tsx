@@ -69,7 +69,7 @@ export function BookCard(data: { data: Books }) {
 				</div>
 			</CardBody>
 			<CardFooter className="pt-0">
-				<Link href={`/product/${id}`}>
+				<Link href={`/books/${id}`}>
 					<Button
 						ripple={false}
 						fullWidth={true}

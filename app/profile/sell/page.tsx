@@ -14,6 +14,9 @@ import toast, { Toaster } from 'react-hot-toast';
 import { redirect, useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { audiences, genres, themes, tones } from '@/lib/data';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidate } from '@/app/_actions';
+import { Books } from '@prisma/client';
 
 type bookData = {
 	name: string;
@@ -90,22 +93,23 @@ export default function Page() {
 		const contents = {
 			...data,
 			image: base64Image,
-			email: session?.user.email,
+			email: session?.user?.email!,
 		};
 
-		console.log(contents);
-
-		const response = await fetch('/api/listbook', {
+		// console.log(contents);
+		const response = await fetch(`/api/books`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify(contents),
+			next: { tags: ['books'] },
 		});
 
 		const postInfo = await response.json();
-		// console.log('postInfo => ', postInfo);
 		const { res: info, error, errorCode } = postInfo;
+
+		console.log('postInfo => ', postInfo);
 		if (error) {
 			toast.error(
 				(t) => (
@@ -137,6 +141,8 @@ export default function Page() {
 				router.push('/');
 			}, 3000);
 		}
+
+		await revalidate('books');
 	};
 
 	return (

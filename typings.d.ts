@@ -27,8 +27,7 @@ export type GenreValue =
 	| 'horror'
 	| 'nonfiction'
 	| 'biography'
-	| 'selfhelp'
-	| 'youngadult';
+	| 'selfhelp';
 
 export type AudienceValue = 'children' | 'middlegrade' | 'youngadult' | 'adult';
 

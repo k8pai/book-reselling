@@ -185,7 +185,7 @@ export default function ProductDetails({
 		user: { name: seller, email },
 	} = data;
 
-	console.log('data from ProductDetails => ', data);
+	// console.log('data from ProductDetails => ', data);
 	return (
 		<section className="w-full py-12 md:py-24 lg:py-32">
 			<div className="container mx-auto flex flex-col lg:flex-row items-center md:items-start h-full gap-8 px-4 md:px-6">
@@ -221,21 +221,21 @@ export default function ProductDetails({
 							<Typography variant="h6" className="font-semibold">
 								tags
 							</Typography>
-							<p className="text-xs text-zinc-500 dark:text-zinc-400">
+							<div className="text-xs text-zinc-500 dark:text-zinc-400">
 								Tone: <Badge variant={'outline'}>{tone}</Badge>
-							</p>
-							<p className="text-xs text-zinc-500 dark:text-zinc-400">
+							</div>
+							<div className="text-xs text-zinc-500 dark:text-zinc-400">
 								Genre:{' '}
 								<Badge variant={'outline'}>{genre}</Badge>
-							</p>
-							<p className="text-xs text-zinc-500 dark:text-zinc-400">
+							</div>
+							<div className="text-xs text-zinc-500 dark:text-zinc-400">
 								Themes:{' '}
 								<Badge variant={'outline'}>{theme}</Badge>
-							</p>
-							<p className="text-xs text-zinc-500 dark:text-zinc-400">
+							</div>
+							<div className="text-xs text-zinc-500 dark:text-zinc-400">
 								Audience:{' '}
 								<Badge variant={'outline'}>{audience}</Badge>
-							</p>
+							</div>
 						</div>
 						<Rating name={name} />
 					</div>

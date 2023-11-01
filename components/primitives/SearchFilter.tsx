@@ -1,13 +1,7 @@
 'use client';
 
 import { Books } from '@prisma/client';
-import React, {
-	ChangeEvent,
-	ChangeEventHandler,
-	useCallback,
-	useEffect,
-	useState,
-} from 'react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 import { BookCard } from './BookCard';
 import {
 	Button,
@@ -15,26 +9,17 @@ import {
 	Option,
 	Select,
 	Typography,
-	useSelect,
 } from '@material-tailwind/react';
-import { Badge } from '../ui/Badge';
-import { Divider } from '@tremor/react';
 import { Toggle } from '../ui/Toogle';
-import { ArrowDownIcon, ArrowUpIcon, ReloadIcon } from '@radix-ui/react-icons';
+import { ArrowDownIcon } from '@radix-ui/react-icons';
 import { filters, categories, sortOptions } from '@/lib/data';
-import {
-	AudienceValue,
-	bookFilterFields,
-	Categories,
-	filterList,
-	FilterValues,
-	Sort,
-	Values,
-} from '@/typings';
+import { Categories, filterList, Sort, Values } from '@/typings';
 import { getField } from '@/lib/helper';
 
 const SearchFilter = ({ books = [] }: { books: Books[] }) => {
-	const [searchTerm, setSearchTerm] = useState('');
+	// console.log('books => ', books);
+
+	const [searchTerm, setSearchTerm] = useState<string>('');
 	const [filter, setFilter] = useState<{
 		category: Categories;
 		list: filterList[];
@@ -81,7 +66,7 @@ const SearchFilter = ({ books = [] }: { books: Books[] }) => {
 		);
 	});
 
-	const sortedBooks = [...filteredBooks].sort((a, b) => {
+	const sortedBooks = filteredBooks.sort((a, b) => {
 		const { value, type } = sortBy;
 
 		if (value === 'name') {
@@ -125,15 +110,7 @@ const SearchFilter = ({ books = [] }: { books: Books[] }) => {
 	};
 
 	const DynamicSelect = useCallback(
-		({
-			filterBy,
-			setFilterBy,
-			data,
-		}: {
-			filterBy: Values;
-			setFilterBy: (value: Values) => void;
-			data: filterList[];
-		}) => {
+		({ data }: { data: filterList[] }) => {
 			return (
 				<Select
 					variant="outlined"
@@ -239,11 +216,7 @@ const SearchFilter = ({ books = [] }: { books: Books[] }) => {
 								);
 							})}
 						</Select>
-						<DynamicSelect
-							filterBy={filterBy}
-							setFilterBy={setFilterBy}
-							data={filter.list}
-						/>
+						<DynamicSelect data={filter.list} />
 					</div>
 					<div className="flex justify-start lg:justify-end">
 						<Button
