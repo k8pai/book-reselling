@@ -5,7 +5,7 @@ export async function GET(request: Request) {
 	try {
 		const res = await prisma.books.findMany({});
 
-		console.log('res for all books => ', res);
+		// console.log('res for all books => ', res);
 		return NextResponse.json(
 			{
 				data: res,

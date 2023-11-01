@@ -13,7 +13,7 @@ import { Books, User } from '@prisma/client';
 const RatingStars = () => {
 	return (
 		<div>
-			<div className="flex items-center mb-2">
+			<div className="flex items-center justify-end mb-2">
 				<svg
 					className="w-4 h-4 text-yellow-300 mr-1"
 					aria-hidden="true"
@@ -64,7 +64,7 @@ const RatingStars = () => {
 				</p>
 			</div>
 			<div>
-				<p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+				<p className="text-sm float-right font-medium text-gray-500 dark:text-gray-400">
 					1,745 global ratings
 				</p>
 			</div>
@@ -74,9 +74,10 @@ const RatingStars = () => {
 
 const Rating = ({ name }: { name: string }) => (
 	<>
-		<p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+		<Typography variant="h6" className="font-semibold">
 			Ratings
-		</p>
+		</Typography>
+
 		<div className="flex items-center mt-4">
 			<a
 				href="#"
@@ -187,16 +188,14 @@ export default function ProductDetails({
 	console.log('data from ProductDetails => ', data);
 	return (
 		<section className="w-full py-12 md:py-24 lg:py-32">
-			<div className="container mx-auto flex items-start h-full gap-8 px-4 md:px-6">
+			<div className="container mx-auto flex flex-col lg:flex-row items-center md:items-start h-full gap-8 px-4 md:px-6">
 				<img
 					alt="Sneaker Image"
-					className="aspect-[1/1] object-cover object-center rounded-md"
-					height="500"
+					className="aspect-[1/1] object-cover object-center rounded-md w-[300px] h-[300px] xl:w-[500px] xl:h-[500px]"
 					src={`data:image/jpeg;base64,${image}`}
-					width="500"
 				/>
-				<div className="flex items-start w-full">
-					<div className=" flex-grow p-4 space-y-6 min-w-[250px] max-w-full w-full">
+				<div className="flex flex-col md:flex-row items-start justify-between space-y-4 md:space-y-0 w-full h-full ">
+					<div className=" flex-grow p-4 space-y-6 min-w-[350px] max-w-[400px] w-full mx-auto">
 						<div className="space-y-3">
 							<div className="flex items-center justify-between">
 								<Typography
@@ -219,6 +218,12 @@ export default function ProductDetails({
 							</Typography>
 						</div>
 						<div className="space-y-2">
+							<Typography variant="h6" className="font-semibold">
+								tags
+							</Typography>
+							<p className="text-xs text-zinc-500 dark:text-zinc-400">
+								Tone: <Badge variant={'outline'}>{tone}</Badge>
+							</p>
 							<p className="text-xs text-zinc-500 dark:text-zinc-400">
 								Genre:{' '}
 								<Badge variant={'outline'}>{genre}</Badge>
@@ -228,25 +233,13 @@ export default function ProductDetails({
 								<Badge variant={'outline'}>{theme}</Badge>
 							</p>
 							<p className="text-xs text-zinc-500 dark:text-zinc-400">
-								Tone: <Badge variant={'outline'}>{tone}</Badge>
-							</p>
-							<p className="text-xs text-zinc-500 dark:text-zinc-400">
 								Audience:{' '}
 								<Badge variant={'outline'}>{audience}</Badge>
 							</p>
 						</div>
-						{/* <Typography variant="h5" className="">
-							Last Price:{' '}
-							<span className="text-foreground-900">
-								${price}
-							</span>
-						</Typography> */}
-						{/* <Typography variant="h4" className="">
-							Ratings
-						</Typography> */}
 						<Rating name={name} />
 					</div>
-					<div className="p-4 rounded-md h-full space-y-6 min-w-[250px]">
+					<div className="p-4 rounded-md h-full space-y-6 min-w-[240px] w-full max-w-[275px] shadow-md mx-auto">
 						<div className="space-y-3">
 							<Typography variant="h4" className="">
 								Seller Details
@@ -274,7 +267,7 @@ export default function ProductDetails({
 							<RatingStars />
 						</div>
 
-						<Button>Add to Cart</Button>
+						<Button className="w-full">Add to Cart</Button>
 						{/* <Button className="w-full h-12 rounded-md bg-zinc-900 text-zinc-50 shadow-sm dark:bg-zinc-50 dark:text-zinc-900">
 							Add to Cart
 						</Button> */}

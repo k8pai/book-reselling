@@ -14,7 +14,6 @@ export interface BookPost {
 	image: string;
 	price: number;
 	contact: string;
-
 	user?: User;
 }
 
@@ -54,5 +53,29 @@ export type ToneValue =
 	| 'suspenseful'
 	| 'whimsical';
 
-export type filterCategories = 'genres' | 'audiences' | 'themes' | 'tones';
+export type Categories = 'genres' | 'audiences' | 'themes' | 'tones';
+
+export type Values =
+	| GenreValue
+	| AudienceValue
+	| ThemeValue
+	| ToneValue
+	| 'all';
+
+type CategoryValuesMap = {
+	genres: GenreValue;
+	audiences: AudienceValue;
+	themes: ThemeValue;
+	tones: ToneValue;
+};
+export type FilterValues<T extends keyof CategoryValuesMap> =
+	CategoryValuesMap[T][];
+
+export type filterList = { name: string; value: Values };
+
 export type bookFilterFields = 'genre' | 'audience' | 'theme' | 'tone';
+
+export interface Sort {
+	value: string;
+	type: 'ascending' | 'descending';
+}

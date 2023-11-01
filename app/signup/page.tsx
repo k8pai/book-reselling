@@ -48,6 +48,21 @@ export default function Page() {
 
 		const userInfo = await response.json();
 		const { data, error, errorCode } = userInfo;
+
+		if (data) {
+			toast.success(
+				(t) => (
+					<span className="flex items-center space-x-3">
+						<b>{`Account Created Successfully!`}</b>
+					</span>
+				),
+				{ position: 'bottom-center' },
+			);
+			setTimeout(() => {
+				router.push('/login');
+			}, 3000);
+		}
+
 		if (error && errorCode === '409') {
 			console.error(error);
 			// toast.error(error, { position: 'bottom-center' });
@@ -60,7 +75,7 @@ export default function Page() {
 				{ position: 'bottom-center' },
 			);
 			setTimeout(() => {
-				router.push('/authenticate/login');
+				router.push('/login');
 			}, 3000);
 		}
 	};

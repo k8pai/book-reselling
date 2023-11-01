@@ -35,11 +35,13 @@ export default function Page() {
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		signIn('credentials', {
+		const response = await signIn('credentials', {
 			...data,
 			callbackUrl: '/',
-			redirect: true,
+			redirect: false,
 		});
+
+		console.log(response);
 	};
 
 	return (
@@ -110,10 +112,7 @@ export default function Page() {
 						className="mt-4 text-center font-normal"
 					>
 						Doesn't have an account?{' '}
-						<a
-							href="/authenticate/signup"
-							className="font-medium text-gray-900"
-						>
+						<a href="/signup" className="font-medium text-gray-900">
 							Sign up
 						</a>
 					</Typography>

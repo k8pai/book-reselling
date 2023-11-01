@@ -1,65 +1,53 @@
-'use client';
+import { Books } from '@prisma/client';
+import { auth } from '@/lib/auth';
+import Dashboard from '../../components/primitives/Dashboard';
+import toast, { Toaster } from 'react-hot-toast';
+import { redirect } from 'next/navigation';
 
-import {
-	Card,
-	Grid,
-	Tab,
-	TabGroup,
-	TabList,
-	TabPanel,
-	TabPanels,
-	Text,
-	Title,
-} from '@tremor/react';
+const fetchData = async () => {
+	try {
+		const session = await auth();
 
-export default function DashboardExample() {
+		// console.log('session => ', session);
+		if (!session) {
+			toast.error(
+				(t) => (
+					<span className="flex items-center space-x-3">
+						<b>{`Login First To Edit Your Profile!`}</b>
+					</span>
+				),
+				{ position: 'bottom-center' },
+			);
+			return { error: 'You need to login first!' };
+		}
+		// console.log('session after checking => ', session);
+
+		const res = await fetch(
+			`${process.env.NEXTAUTH_URL}/api/sellings/${session?.user?.id}`,
+			{ next: { revalidate: 1 } },
+		);
+		const data: { data: Books[] } = await res.json();
+		return { data: data.data };
+	} catch (error) {
+		return { error };
+	}
+};
+
+export default async function Page() {
+	const session = await auth();
+	if (session === null) {
+		redirect('/');
+	}
+	const { data, error } = await fetchData();
+
 	return (
-		<main className="p-12">
-			<Title>Account Settings</Title>
-			<Text>
-				Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-			</Text>
-
-			<TabGroup className="mt-6">
-				<TabList>
-					<Tab>Account</Tab>
-					<Tab>Sellings</Tab>
-				</TabList>
-				<TabPanels>
-					<TabPanel>
-						<Grid
-							numItemsMd={2}
-							numItemsLg={3}
-							className="gap-6 mt-6"
-						>
-							<Card>
-								{/* Placeholder to set height */}
-								<div className="h-28" />
-							</Card>
-							<Card>
-								{/* Placeholder to set height */}
-								<div className="h-28" />
-							</Card>
-							<Card>
-								{/* Placeholder to set height */}
-								<div className="h-28" />
-							</Card>
-						</Grid>
-						<div className="mt-6">
-							<Card>
-								<div className="h-80" />
-							</Card>
-						</div>
-					</TabPanel>
-					<TabPanel>
-						<div className="mt-6">
-							<Card>
-								<div className="h-96" />
-							</Card>
-						</div>
-					</TabPanel>
-				</TabPanels>
-			</TabGroup>
-		</main>
+		<div>
+			<Dashboard
+				data={data!}
+				error={(error as string) || ''}
+				session={session}
+			/>
+			<Toaster />
+		</div>
 	);
 }

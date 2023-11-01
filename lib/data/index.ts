@@ -3,13 +3,15 @@ import {
 	GenreValue,
 	ThemeValue,
 	ToneValue,
-	filterCategories,
+	Categories,
+	Values,
 } from '@/typings';
 
 const audiences: {
 	name: string;
-	value: AudienceValue;
+	value: AudienceValue | 'all';
 }[] = [
+	{ name: 'None', value: 'all' },
 	{ name: 'Children', value: 'children' },
 	{ name: 'Middle Grade', value: 'middlegrade' },
 	{ name: 'Young Adult', value: 'youngadult' },
@@ -18,8 +20,9 @@ const audiences: {
 
 const themes: {
 	name: string;
-	value: ThemeValue;
+	value: ThemeValue | 'all';
 }[] = [
+	{ name: 'None', value: 'all' },
 	{ name: 'Good vs. Evil', value: 'goodvsevil' },
 	{ name: 'Love and Loss', value: 'loveandloss' },
 	{ name: 'Identity', value: 'identity' },
@@ -33,8 +36,9 @@ const themes: {
 
 const tones: {
 	name: string;
-	value: ToneValue;
+	value: ToneValue | 'all';
 }[] = [
+	{ name: 'None', value: 'all' },
 	{ name: 'Adventurous', value: 'adventurous' },
 	{ name: 'Dark', value: 'dark' },
 	{ name: 'Humorous', value: 'humorous' },
@@ -47,8 +51,9 @@ const tones: {
 
 const genres: {
 	name: string;
-	value: GenreValue;
+	value: GenreValue | 'all';
 }[] = [
+	{ name: 'None', value: 'all' },
 	{ name: 'Fantasy', value: 'fantasy' },
 	{ name: 'Mystery', value: 'mystery' },
 	{ name: 'Romance', value: 'romance' },
@@ -62,11 +67,17 @@ const genres: {
 	{ name: 'Young Adult', value: 'youngadult' },
 ];
 
+export const sortOptions: Record<string, string>[] = [
+	{ label: 'Name', value: 'name' },
+	{ label: 'Price', value: 'price' },
+	{ label: 'Author', value: 'author' },
+];
+
 const categories: {
-	name: filterCategories;
+	name: Categories;
 	data: {
 		name: string;
-		value: ToneValue | GenreValue | ThemeValue | AudienceValue;
+		value: ToneValue | GenreValue | ThemeValue | AudienceValue | 'all';
 	}[];
 }[] = [
 	{ name: 'genres', data: genres },
@@ -75,11 +86,11 @@ const categories: {
 	{ name: 'tones', data: genres },
 ];
 
-const filterCategory = {
+const filters = {
 	audiences,
 	genres,
 	themes,
 	tones,
 };
 
-export { audiences, genres, themes, tones, categories, filterCategory };
+export { audiences, genres, themes, tones, categories, filters };

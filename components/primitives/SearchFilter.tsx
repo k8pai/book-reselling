@@ -4,6 +4,7 @@ import { Books } from '@prisma/client';
 import React, {
 	ChangeEvent,
 	ChangeEventHandler,
+	useCallback,
 	useEffect,
 	useState,
 } from 'react';
@@ -13,83 +14,83 @@ import {
 	Input,
 	Option,
 	Select,
+	Typography,
 	useSelect,
 } from '@material-tailwind/react';
 import { Badge } from '../ui/Badge';
 import { Divider } from '@tremor/react';
 import { Toggle } from '../ui/Toogle';
-import { ArrowUpIcon } from '@radix-ui/react-icons';
-import { filterCategory, categories as filters } from '@/lib/data';
-import { bookFilterFields, filterCategories } from '@/typings';
+import { ArrowDownIcon, ArrowUpIcon, ReloadIcon } from '@radix-ui/react-icons';
+import { filters, categories, sortOptions } from '@/lib/data';
+import {
+	AudienceValue,
+	bookFilterFields,
+	Categories,
+	filterList,
+	FilterValues,
+	Sort,
+	Values,
+} from '@/typings';
 import { getField } from '@/lib/helper';
-
-const sortOptionsAsc: Sort[] = [
-	{ label: 'Name', value: 'Name,ascending', type: 'ascending' },
-	{ label: 'Price', value: 'Price,ascending', type: 'ascending' },
-	{ label: 'Author', value: 'Author,ascending', type: 'ascending' },
-];
-
-interface Sort {
-	label: 'Name' | 'Price' | 'Author';
-	value: string;
-	type: 'ascending' | 'descending';
-}
 
 const SearchFilter = ({ books = [] }: { books: Books[] }) => {
 	const [searchTerm, setSearchTerm] = useState('');
-	const [selectedFilter, setSelectedFilter] = useState('all');
-	const [sortBy, setSortBy] = useState<Sort>({
-		label: sortOptionsAsc[0].label,
-		value: sortOptionsAsc[0].value,
-		type: sortOptionsAsc[0].type,
+	const [filter, setFilter] = useState<{
+		category: Categories;
+		list: filterList[];
+	}>({
+		category: 'genres',
+		list: filters['genres'],
 	});
-	const [currFilter, setCurrFilter] = useState<filterCategories>(
-		filters[0].name,
-	);
+
+	const [filterBy, setFilterBy] = useState<Values>('all');
+	const [sortBy, setSortBy] = useState<Sort>({
+		value: 'name',
+		type: 'ascending',
+	});
 
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
 		setSearchTerm(e.target.value);
 	};
 
-	useEffect(() => {
-		console.log('change triggered -> ', sortBy);
-	}, [sortBy]);
-
 	const handleSortBy = (value: string | undefined) => {
-		console.log('value => ', value);
 		if (!value) {
 			return;
 		}
-		const [label, type] = value.split(',');
-		console.log(`name = ${label}, type =  ${type}`);
 		setSortBy((val) => ({
 			...val,
-			label: label as Sort['label'],
 			value,
 		}));
 	};
 
 	const filteredBooks = books.filter((book) => {
-		if (!selectedFilter || !currFilter) {
+		if (!filter.category) {
 			return book;
 		}
 
+		if (filterBy === 'all') {
+			return (
+				book.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				book.author.toLowerCase().includes(searchTerm.toLowerCase())
+			);
+		}
 		return (
-			book[getField(currFilter)].toLowerCase() ===
-			selectedFilter.toLowerCase()
+			(book.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				book.author.toLowerCase().includes(searchTerm.toLowerCase())) &&
+			book[getField(filter.category)].toLowerCase() === filterBy
 		);
 	});
 
 	const sortedBooks = [...filteredBooks].sort((a, b) => {
-		const { label, type } = sortBy;
+		const { value, type } = sortBy;
 
-		if (label === 'Name') {
+		if (value === 'name') {
 			return type === 'ascending'
 				? a.name.localeCompare(b.name)
 				: b.name.localeCompare(a.name);
-		} else if (label === 'Price') {
+		} else if (value === 'price') {
 			return type === 'ascending' ? a.price - b.price : b.price - a.price;
-		} else if (label === 'Author') {
+		} else if (value === 'author') {
 			return type === 'ascending'
 				? a.author.localeCompare(b.author)
 				: b.author.localeCompare(a.author);
@@ -97,115 +98,191 @@ const SearchFilter = ({ books = [] }: { books: Books[] }) => {
 
 		return 0;
 	});
+
+	const changeCategory = (val: Categories) => {
+		setFilter((ref) => ({
+			...ref,
+			category: val as Categories,
+			list: filters[val as Categories],
+		}));
+
+		setFilterBy('all');
+	};
+
+	const resetFilters = () => {
+		setFilter({
+			category: 'genres',
+			list: filters['genres'],
+		});
+
+		setSortBy({
+			value: 'name',
+			type: 'ascending',
+		});
+
+		setFilterBy('all');
+		setSearchTerm('');
+	};
+
+	const DynamicSelect = useCallback(
+		({
+			filterBy,
+			setFilterBy,
+			data,
+		}: {
+			filterBy: Values;
+			setFilterBy: (value: Values) => void;
+			data: filterList[];
+		}) => {
+			return (
+				<Select
+					variant="outlined"
+					label="Filter By"
+					name="filterby"
+					value={filterBy}
+					defaultValue={filterBy}
+					onChange={(filterVal) => setFilterBy(filterVal as Values)}
+				>
+					{data.map(({ name, value }, _) => {
+						return (
+							<Option
+								index={_ + 1}
+								key={`${name}-${Math.random() * 12345}`}
+								value={value}
+								className="capitalize"
+							>
+								{name}
+							</Option>
+						);
+					})}
+				</Select>
+			);
+		},
+		[filterBy, setFilterBy],
+	);
+
 	return (
 		<div>
-			<div className="flex flex-col justify-start items-center md:flex-row md:justify-between">
-				<div className="relative flex w-full max-w-[24rem]">
-					<Input
-						crossOrigin={Input}
-						type="text"
-						label="Search By Name"
-						value={searchTerm}
-						onChange={handleSearch}
-						className="pr-20"
-						containerProps={{
-							className: 'min-w-0',
-						}}
-					/>
-				</div>
-				<div className="flex items-center space-x-2 mt-4 lg:mt-0">
-					<Select
-						variant="outlined"
-						label="Category"
-						name="cateogry"
-						onChange={(value) =>
-							setCurrFilter(value as filterCategories)
-						}
-					>
-						<Option value="">None</Option>
-						{filters.map(({ name }, _) => {
-							return (
-								<Option
-									key={name}
-									value={name}
-									className="capitalize"
-								>
-									{name}
-								</Option>
-							);
-						})}
-					</Select>
-					<Select
-						variant="outlined"
-						label="Filter By"
-						name="filter"
-						onChange={(value) => setSelectedFilter(value || '')}
-					>
-						{!filterCategory || !currFilter ? (
-							<Option value="">None</Option>
-						) : (
-							filterCategory[currFilter].map(
-								({ name, value }, _) => {
-									return (
-										<Option
-											key={value}
-											value={value}
-											className="capitalize"
-										>
-											{name}
-										</Option>
-									);
-								},
-							)
-						)}
-					</Select>
-				</div>
-
-				<div className="flex items-center justify-start space-x-2 mt-4 lg:mt-0">
-					<Select
-						variant="outlined"
-						label="Sort By"
-						name="sort"
-						defaultValue={sortBy.label}
-						onChange={(value) => handleSortBy(value)}
-					>
-						{sortOptionsAsc.map(({ label, value, type }, _) => {
-							return (
-								<Option
-									key={value}
-									value={value}
-									className="capitalize"
-								>
-									{label}
-								</Option>
-							);
-						})}
-					</Select>
-					<Toggle
-						onClick={() =>
-							setSortBy((val) => ({
-								...val,
-								type:
-									val.type === 'ascending'
-										? 'descending'
-										: 'ascending',
-							}))
-						}
-					>
-						<ArrowUpIcon
-							className={`mr-2 h-4 w-4 font-bold transition-all ${
-								sortBy.type === 'descending' ? 'rotate-180' : ''
-							}`}
+			<div className="flex flex-col justify-start items-start space-y-4 lg:space-y-0 lg:items-start lg:flex-row lg:justify-between">
+				<div className="w-full max-w-[24rem] space-y-6">
+					<div>
+						<Input
+							crossOrigin={Input}
+							type="text"
+							label="Search By Name"
+							value={searchTerm}
+							onChange={handleSearch}
+							className="pr-20"
+							containerProps={{
+								className: 'min-w-0',
+							}}
 						/>
-						{sortBy.type}
-					</Toggle>
+					</div>
+					<div className="flex items-center space-x-2 mt-4 lg:mt-0">
+						<Select
+							variant="outlined"
+							label="Sort By"
+							name="sort"
+							value={sortBy.value}
+							onChange={(value) => handleSortBy(value)}
+						>
+							{sortOptions.map(({ value }, _) => {
+								return (
+									<Option
+										key={value}
+										value={value}
+										className="capitalize"
+									>
+										{value}
+									</Option>
+								);
+							})}
+						</Select>
+						<Toggle
+							onClick={() =>
+								setSortBy((val) => ({
+									...val,
+									type:
+										val.type === 'ascending'
+											? 'descending'
+											: 'ascending',
+								}))
+							}
+						>
+							Descending
+							<ArrowDownIcon
+								className={`ml-2 h-4 w-4 font-bold transition-all`}
+							/>
+						</Toggle>
+					</div>
+				</div>
+				<div className="space-y-6">
+					<div className="flex items-center justify-start space-x-2 mt-4 lg:mt-0">
+						<Select
+							variant="outlined"
+							label="Category"
+							name="category"
+							value={filter.category}
+							onChange={(val) =>
+								changeCategory(val as Categories)
+							}
+						>
+							{categories.map(({ name }, _) => {
+								return (
+									<Option
+										key={name}
+										value={name}
+										className="capitalize"
+									>
+										{name}
+									</Option>
+								);
+							})}
+						</Select>
+						<DynamicSelect
+							filterBy={filterBy}
+							setFilterBy={setFilterBy}
+							data={filter.list}
+						/>
+					</div>
+					<div className="flex justify-start lg:justify-end">
+						<Button
+							variant="outlined"
+							className="flex items-center gap-2 p-2.5"
+							onClick={() => resetFilters()}
+						>
+							Refresh
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth={2}
+								stroke="currentColor"
+								className="h-5 w-5"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+								/>
+							</svg>
+						</Button>
+					</div>
 				</div>
 			</div>
-			<div className="grid grid-cols-1 md:grid-cols-2 place-items-center lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-10">
-				{sortedBooks.map((item, _) => {
-					return <BookCard key={item.id} data={item} />;
-				})}
-			</div>
+			{sortedBooks.length > 0 ? (
+				<div className="grid grid-cols-1 md:grid-cols-2 place-items-center lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-10">
+					{sortedBooks.map((item, _) => {
+						return <BookCard key={item.id} data={item} />;
+					})}
+				</div>
+			) : (
+				<div className="flex items-center justify-center my-20">
+					<Typography variant="h1" className="font-bold font-serif">
+						No Books Found!
+					</Typography>
+				</div>
+			)}
 		</div>
 	);
 };

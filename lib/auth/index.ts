@@ -57,7 +57,7 @@ export const authConfig: AuthOptions = {
 	],
 	adapter: PrismaAdapter(prisma),
 	pages: {
-		signIn: '/authenticate/login',
+		signIn: '/login',
 	},
 	callbacks: {
 		async jwt({ token, user, session }) {

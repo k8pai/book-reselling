@@ -1,29 +1,18 @@
 'use client';
 
-import {
-	AudienceValue,
-	BookPost,
-	GenreValue,
-	ThemeValue,
-	ToneValue,
-	userType,
-} from '@/typings';
+import { AudienceValue, GenreValue, ThemeValue, ToneValue } from '@/typings';
 import {
 	Card,
 	Input,
-	Checkbox,
 	Button,
 	Typography,
-	checkbox,
 	Select,
 	Option,
 } from '@material-tailwind/react';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import toast, { Toaster } from 'react-hot-toast';
 import { redirect, useRouter } from 'next/navigation';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { BookDataType } from '@/components/primitives/BookCard';
-import { MultiSelect, MultiSelectItem, SelectItem } from '@tremor/react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { audiences, genres, themes, tones } from '@/lib/data';
 
 type bookData = {
@@ -37,20 +26,6 @@ type bookData = {
 	theme: ThemeValue | '';
 	audience: AudienceValue | '';
 };
-
-// const bookGenres = [
-// 	{ name: 'Fantasy', value: 'fantasy' },
-// 	{ name: 'Mystery', value: 'mystery' },
-// 	{ name: 'Romance', value: 'romance' },
-// 	{ name: 'Science Fiction', value: 'scifi' },
-// 	{ name: 'Thriller', value: 'thriller' },
-// 	{ name: 'Historical', value: 'historical' },
-// 	{ name: 'Horror', value: 'horror' },
-// 	{ name: 'Non-fiction', value: 'nonfiction' },
-// 	{ name: 'Biography', value: 'biography' },
-// 	{ name: 'Self-help', value: 'selfhelp' },
-// 	{ name: 'Young Adult', value: 'youngadult' },
-// ];
 
 export default function Page() {
 	const router = useRouter();
@@ -97,6 +72,20 @@ export default function Page() {
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+
+		if (!base64Image) {
+			toast.error(
+				(t) => (
+					<span className="flex items-center space-x-3">
+						<b>{'Try Uploading Another Cover Picture.'}</b>
+						<button onClick={() => toast.dismiss(t.id)}>
+							Dismiss
+						</button>
+					</span>
+				),
+				{ position: 'bottom-center' },
+			);
+		}
 
 		const contents = {
 			...data,
@@ -389,25 +378,7 @@ export default function Page() {
 							}}
 						/>
 					</div>
-					<Checkbox
-						crossOrigin={Checkbox}
-						label={
-							<Typography
-								variant="small"
-								color="gray"
-								className="flex items-center font-normal"
-							>
-								I agree the
-								<a
-									href="#"
-									className="font-medium transition-colors hover:text-gray-900"
-								>
-									&nbsp;Terms and Conditions
-								</a>
-							</Typography>
-						}
-						containerProps={{ className: '-ml-2.5' }}
-					/>
+
 					<Button className="mt-6" fullWidth type="submit">
 						Add Book To Selling List
 					</Button>

@@ -11,6 +11,7 @@ import {
 } from '@material-tailwind/react';
 import Link from 'next/link';
 import { Books } from '@prisma/client';
+import { Badge } from '../ui/Badge';
 
 export interface BookDataType {
 	createdAt: Date;
@@ -24,7 +25,8 @@ export interface BookDataType {
 }
 
 export function BookCard(data: { data: Books }) {
-	const { author, name, image, price, id } = data.data;
+	const { author, name, image, price, id, genre, theme, tone, audience } =
+		data.data;
 
 	return (
 		<Card className="w-72 h-fit">
@@ -52,13 +54,19 @@ export function BookCard(data: { data: Books }) {
 						${price}
 					</Typography>
 				</div>
-				{/* <Typography
+				<Typography
 					variant="small"
 					color="gray"
-					className="font-normal opacity-75"
+					className="font-normal opacity-75 font-sans"
 				>
 					{author}
-				</Typography> */}
+				</Typography>
+				<div className="mt-2 flex flex-wrap justify-start gap-2">
+					<Badge variant={'secondary'}>{audience}</Badge>
+					<Badge variant={'secondary'}>{tone}</Badge>
+					<Badge variant={'secondary'}>{genre}</Badge>
+					<Badge variant={'secondary'}>{theme}</Badge>
+				</div>
 			</CardBody>
 			<CardFooter className="pt-0">
 				<Link href={`/product/${id}`}>
