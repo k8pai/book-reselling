@@ -2,6 +2,8 @@
 
 Welcome to the documentation for the Book Reselling Website built with Next.js! This repository contains the source code and documentation for the website, designed to help users buy and sell books.
 
+You can checkout the live demo. [live demo](https://book-reselling.vercel.app/)
+
 ## Table of Contents
 
 1. [Getting Started](#getting-started)
