@@ -3,7 +3,7 @@
 import { ArrowLeftOnRectangleIcon } from '@heroicons/react/20/solid';
 import { TrashIcon } from '@heroicons/react/24/solid';
 import { Button } from '@/components/ui/Button';
-import { Books } from '@prisma/client';
+import { Books, Cart, User } from '@prisma/client';
 import {
 	Badge,
 	Card,
@@ -19,6 +19,8 @@ import {
 import { DeleteSellingBook } from '../../app/_actions';
 import toast, { Toaster } from 'react-hot-toast';
 import { useFormStatus } from 'react-dom';
+import { HeartFilledIcon } from '@radix-ui/react-icons';
+import Link from 'next/link';
 
 function SubmitButton() {
 	const { pending } = useFormStatus();
@@ -37,7 +39,18 @@ function SubmitButton() {
 	);
 }
 
-const Sellings = ({ data = [], error }: { data: Books[]; error: string }) => {
+type BookData = Books & {
+	user: User;
+	favorites: Cart[];
+};
+
+const Sellings = ({
+	data = [],
+	error,
+}: {
+	data: BookData[];
+	error: string;
+}) => {
 	const handleDelete = async (id: Books['id']) => {
 		const { data, error } = await DeleteSellingBook(id);
 
@@ -73,6 +86,7 @@ const Sellings = ({ data = [], error }: { data: Books[]; error: string }) => {
 						<TableHeaderCell>Author</TableHeaderCell>
 						<TableHeaderCell>Price</TableHeaderCell>
 						<TableHeaderCell>Status</TableHeaderCell>
+						<TableHeaderCell>Wishlisted</TableHeaderCell>
 						<TableHeaderCell>Actions</TableHeaderCell>
 					</TableRow>
 				</TableHead>
@@ -83,7 +97,11 @@ const Sellings = ({ data = [], error }: { data: Books[]; error: string }) => {
 						data &&
 						data.map((item) => (
 							<TableRow key={item.id}>
-								<TableCell>{item.name}</TableCell>
+								<TableCell>
+									<Link href={`/books/${item.id}`}>
+										{item.name}
+									</Link>
+								</TableCell>
 								<TableCell>
 									<Text>{item.author}</Text>
 								</TableCell>
@@ -94,8 +112,18 @@ const Sellings = ({ data = [], error }: { data: Books[]; error: string }) => {
 									<Badge
 										color="emerald"
 										icon={ArrowLeftOnRectangleIcon}
+										className="rounded-md"
 									>
 										{'Yet to be bought'}
+									</Badge>
+								</TableCell>
+								<TableCell>
+									<Badge
+										color="blue"
+										icon={HeartFilledIcon}
+										className="rounded-md"
+									>
+										{item.favorites.length}
 									</Badge>
 								</TableCell>
 

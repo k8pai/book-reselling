@@ -14,6 +14,8 @@ export default async function Page() {
 	}
 	const { data, error } = await getSellingList(session?.user?.id);
 
+	console.log('data => ', data);
+
 	return (
 		<div>
 			<Dashboard data={data!} error={error as string} session={session} />

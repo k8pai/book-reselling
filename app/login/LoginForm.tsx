@@ -13,8 +13,14 @@ import {
 	Option,
 } from '@material-tailwind/react';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 const LoginForm = () => {
+	const searchParams = useSearchParams();
+
+	const callback = searchParams.get('callbackUrl');
+
+	// console.log('path from login => ', callback);
 	const [data, setData] = useState<Pick<userType, 'email' | 'password'>>({
 		email: '',
 		password: '',
@@ -30,7 +36,7 @@ const LoginForm = () => {
 		e.preventDefault();
 		await signIn('credentials', {
 			...data,
-			callbackUrl: '/',
+			callbackUrl: callback ?? '/',
 			redirect: true,
 		});
 	};

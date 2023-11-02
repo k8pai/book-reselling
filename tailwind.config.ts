@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss';
 const withMT = require('@material-tailwind/react/utils/withMT');
+const colors = require('tailwindcss/colors');
 
 const config: Config = {
 	content: [
@@ -116,6 +117,7 @@ const config: Config = {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))',
 				},
+				...colors,
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

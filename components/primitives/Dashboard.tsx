@@ -16,16 +16,21 @@ import {
 // import { TextInput } from '@tremor/react';
 
 import Sellings from './Sellings';
-import { Books } from '@prisma/client';
+import { Books, Cart, User } from '@prisma/client';
 import { Session } from 'next-auth';
 // import { Typography } from '@material-tailwind/react';
+
+type BookData = Books & {
+	user: User;
+	favorites: Cart[];
+};
 
 const Dashboard = ({
 	data,
 	error,
 	session,
 }: {
-	data: Books[];
+	data: BookData[];
 	error: string;
 	session: Session;
 }) => {

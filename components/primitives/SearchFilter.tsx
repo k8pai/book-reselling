@@ -13,6 +13,7 @@ import {
 import { Toggle } from '../ui/Toogle';
 import { ArrowDownIcon } from '@radix-ui/react-icons';
 import { filters, categories, sortOptions } from '@/lib/data';
+import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { Categories, filterList, Sort, Values } from '@/typings';
 import { getField } from '@/lib/helper';
 
@@ -140,8 +141,8 @@ const SearchFilter = ({ books = [] }: { books: Books[] }) => {
 
 	return (
 		<div>
-			<div className="flex flex-col justify-start items-start space-y-4 lg:space-y-0 lg:items-start lg:flex-row lg:justify-between">
-				<div className="w-full max-w-[24rem] space-y-6">
+			<div className="flex flex-col justify-start items-start lg:items-start lg:flex-row lg:justify-between">
+				<div className="w-full max-w-[24rem] space-y-4">
 					<div>
 						<Input
 							crossOrigin={Input}
@@ -155,7 +156,7 @@ const SearchFilter = ({ books = [] }: { books: Books[] }) => {
 							}}
 						/>
 					</div>
-					<div className="flex items-center space-x-2 mt-4 lg:mt-0">
+					<div className="flex items-center space-x-2">
 						<Select
 							variant="outlined"
 							label="Sort By"
@@ -193,8 +194,8 @@ const SearchFilter = ({ books = [] }: { books: Books[] }) => {
 						</Toggle>
 					</div>
 				</div>
-				<div className="space-y-6">
-					<div className="flex items-center justify-start space-x-2 mt-4 lg:mt-0">
+				<div className="w-full max-w-[24rem] space-y-4">
+					<div className="flex flex-wrap lg:flex-nowrap items-center justify-start space-y-4 lg:space-y-0 space-x-0 lg:space-x-2 mt-4 lg:mt-0">
 						<Select
 							variant="outlined"
 							label="Category"

@@ -51,6 +51,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   books         Books[]
+  cart          Cart[]
 
   @@map("users")
 }
@@ -69,6 +70,19 @@ model Books {
   price         Int
   userId        String    @db.ObjectId
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  favorites     Cart[]
 
   @@map("books")
+}
+
+model Cart {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookId String @db.ObjectId
+  book   Books  @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  // Add a unique constraint on userId and bookId
+  @@unique([userId, bookId])
+  @@map("favorites")
 }

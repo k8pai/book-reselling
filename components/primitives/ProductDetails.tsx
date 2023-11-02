@@ -1,10 +1,17 @@
 'use client';
 
-import React from 'react';
+import React, { SetStateAction, useCallback, useState } from 'react';
 import { Button, Typography } from '@material-tailwind/react';
 import { ph } from '@/lib/helper';
 import { Badge } from '../ui/Badge';
-import { Books, User } from '@prisma/client';
+import { Books, Cart, User } from '@prisma/client';
+import { addToCart } from '@/app/_actions';
+import { useFormStatus } from 'react-dom';
+import { Session } from 'next-auth';
+import { usePathname, useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
+import Link from 'next/link';
+import { HeartIcon, HeartFilledIcon } from '@radix-ui/react-icons';
 
 const RatingStars = () => {
 	return (
@@ -60,7 +67,7 @@ const RatingStars = () => {
 				</p>
 			</div>
 			<div>
-				<p className="text-sm float-right font-medium text-gray-500 dark:text-gray-400">
+				<p className="text-sm flex justify-end font-medium text-gray-500 dark:text-gray-400">
 					1,745 global ratings
 				</p>
 			</div>
@@ -164,8 +171,10 @@ const Rating = ({ name }: { name: string }) => (
 
 export default function ProductDetails({
 	data,
+	session,
 }: {
-	data: Books & { user: User };
+	data: Books & { user: User } & { favorites: Cart[] };
+	session: Session | null;
 }) {
 	const {
 		author,
@@ -178,10 +187,73 @@ export default function ProductDetails({
 		theme,
 		tone,
 		price,
-		user: { name: seller, email },
+		user: { name: seller, email, id: userId },
+		favorites,
 	} = data;
 
-	// console.log('data from ProductDetails => ', data);
+	const [isFav, setIsFav] = useState<boolean>(
+		session && favorites.find((fav) => fav.userId === session.user.id)
+			? true
+			: false,
+	);
+
+	const path = usePathname();
+
+	const AddtocartButton = useCallback(
+		({
+			id,
+			userId,
+			session,
+		}: {
+			id: string;
+			userId: string;
+			session: Session | null;
+		}) => {
+			// console.log(`isFav = `, isFav);
+
+			const handleSubmit = async () => {
+				// console.log('handling-submit...', session);
+				if (!session) {
+					signIn('credentials', {
+						callbackUrl: path,
+					});
+				}
+
+				const {
+					data: res,
+					isFav: fav,
+					error,
+				} = await addToCart(id, session?.user.id);
+				setIsFav(fav);
+			};
+
+			return (
+				<div>
+					<form action={handleSubmit}>
+						<Button
+							type="submit"
+							variant="outlined"
+							className={`w-full flex items-center justify-center space-x-2`}
+						>
+							<span>
+								{isFav ? 'Wishlisted' : 'Add to Wishlist'}
+							</span>
+							{isFav ? (
+								<HeartFilledIcon className="h-5 w-5 fill-red-500 text-red-500" />
+							) : (
+								<HeartIcon />
+							)}
+						</Button>
+					</form>
+					<Link href={'/cart'}>
+						<Button className={`w-full mt-4`}>Go to cart</Button>
+					</Link>
+				</div>
+			);
+		},
+		[isFav],
+	);
+
 	return (
 		<section className="w-full py-8 md:py-16 lg:py-24">
 			<div className="container mx-auto flex flex-col lg:flex-row items-center lg:items-start h-full gap-8 px-4 md:px-6">
@@ -263,7 +335,11 @@ export default function ProductDetails({
 							<RatingStars />
 						</div>
 
-						<Button className="w-full">Add to Cart</Button>
+						<AddtocartButton
+							id={id}
+							userId={userId}
+							session={session}
+						/>
 					</div>
 				</div>
 			</div>

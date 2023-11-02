@@ -11,7 +11,7 @@ export function Workflow() {
 	const url = createWorkflow(router);
 	const len = url.length;
 	return (
-		<div className="p-6 px-10">
+		<div className="p-3 md:p-6 md:px-10">
 			<Breadcrumbs>
 				{url.map(({ label, path }, _) => {
 					return (

@@ -20,6 +20,7 @@ export const getBooksById = async (id: string) => {
 			where: { id },
 			include: {
 				user: true,
+				favorites: true,
 			},
 		});
 
@@ -39,6 +40,7 @@ export const getSellingList = async (id: string) => {
 			where: { userId: id },
 			include: {
 				user: true,
+				favorites: true,
 			},
 		});
 

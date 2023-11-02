@@ -9,7 +9,10 @@ import {
 	MenuList,
 	MenuHandler,
 	MenuItem,
+	IconButton,
 } from '@material-tailwind/react';
+
+import { Button as UiButton } from '@/components/ui';
 import { signIn, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import {
@@ -17,6 +20,7 @@ import {
 	UserCircleIcon,
 	PlusIcon,
 } from '@heroicons/react/20/solid';
+import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { Session } from 'next-auth';
 
 export function Header({ user }: { user: Session['user'] | undefined }) {
@@ -67,6 +71,7 @@ export function Header({ user }: { user: Session['user'] | undefined }) {
 								</Typography>
 							</MenuItem>
 						</Link>
+						<hr className="my-2" />
 						{user.accountType === 'seller' ? (
 							<Link
 								href={`/profile`}
@@ -110,6 +115,21 @@ export function Header({ user }: { user: Session['user'] | undefined }) {
 								</MenuItem>
 							</Link>
 						) : null}
+						<Link
+							href={'/cart'}
+							className="outline-none hover:outline-none"
+						>
+							<MenuItem className="flex items-center gap-2">
+								<ShoppingBagIcon className="w-5 h-5" />
+
+								<Typography
+									variant="small"
+									className="font-medium"
+								>
+									Wishlist
+								</Typography>
+							</MenuItem>
+						</Link>
 						<hr className="my-2" />
 						<MenuItem
 							className="flex items-center gap-2 "
@@ -151,7 +171,7 @@ export function Header({ user }: { user: Session['user'] | undefined }) {
 						<Button
 							variant="gradient"
 							size="sm"
-							className="hidden lg:inline-block"
+							className="inline-block"
 						>
 							<span>Sign up</span>
 						</Button>
@@ -177,7 +197,7 @@ export function Header({ user }: { user: Session['user'] | undefined }) {
 						as="li"
 						variant="small"
 						color="blue-gray"
-						className="p-1 font-medium"
+						className="hidden md:inline-block p-1 font-medium"
 					>
 						<Link
 							href="/"
@@ -186,12 +206,13 @@ export function Header({ user }: { user: Session['user'] | undefined }) {
 							Home
 						</Link>
 					</Typography>
+
 					{user && user.accountType === 'seller' ? (
 						<Typography
 							as="li"
 							variant="small"
 							color="blue-gray"
-							className="p-1 font-medium whitespace-nowrap"
+							className="hidden md:inline-block p-1 font-medium whitespace-nowrap"
 						>
 							<Link
 								href="/profile"
@@ -201,6 +222,16 @@ export function Header({ user }: { user: Session['user'] | undefined }) {
 							</Link>
 						</Typography>
 					) : null}
+					<Typography
+						as="li"
+						variant="small"
+						color="blue-gray"
+						className="p-1 font-medium"
+					>
+						<Link href="/cart" className="group">
+							<ShoppingBagIcon className="text-zinc-900 h-5 w-5 group-hover:scale-105" />
+						</Link>
+					</Typography>
 					{/* <Typography
 						as="li"
 						variant="small"
