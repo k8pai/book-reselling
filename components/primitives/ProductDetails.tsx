@@ -199,60 +199,47 @@ export default function ProductDetails({
 
 	const path = usePathname();
 
-	const AddtocartButton = useCallback(
-		({
-			id,
-			userId,
-			session,
-		}: {
-			id: string;
-			userId: string;
-			session: Session | null;
-		}) => {
-			// console.log(`isFav = `, isFav);
+	const AddtocartButton = useCallback(() => {
+		// console.log(`isFav = `, isFav);
 
-			const handleSubmit = async () => {
-				// console.log('handling-submit...', session);
-				if (!session) {
-					signIn('credentials', {
-						callbackUrl: path,
-					});
-				}
+		const handleSubmit = async () => {
+			// console.log('handling-submit...', session);
+			if (!session) {
+				signIn('credentials', {
+					callbackUrl: path,
+				});
+			}
 
-				const {
-					data: res,
-					isFav: fav,
-					error,
-				} = await addToCart(id, session?.user.id);
-				setIsFav(fav);
-			};
+			const {
+				data: res,
+				isFav: fav,
+				error,
+			} = await addToCart(id, session?.user.id);
+			setIsFav(fav);
+		};
 
-			return (
-				<div>
-					<form action={handleSubmit}>
-						<Button
-							type="submit"
-							variant="outlined"
-							className={`w-full flex items-center justify-center space-x-2`}
-						>
-							<span>
-								{isFav ? 'Wishlisted' : 'Add to Wishlist'}
-							</span>
-							{isFav ? (
-								<HeartFilledIcon className="h-5 w-5 fill-red-500 text-red-500" />
-							) : (
-								<HeartIcon />
-							)}
-						</Button>
-					</form>
-					<Link href={'/cart'}>
-						<Button className={`w-full mt-4`}>Go to cart</Button>
-					</Link>
-				</div>
-			);
-		},
-		[isFav],
-	);
+		return (
+			<div>
+				<form action={handleSubmit}>
+					<Button
+						type="submit"
+						variant="outlined"
+						className={`w-full flex items-center justify-center space-x-2`}
+					>
+						<span>{isFav ? 'Wishlisted' : 'Add to Wishlist'}</span>
+						{isFav ? (
+							<HeartFilledIcon className="h-5 w-5 fill-red-500 text-red-500" />
+						) : (
+							<HeartIcon />
+						)}
+					</Button>
+				</form>
+				<Link href={'/cart'}>
+					<Button className={`w-full mt-4`}>Go to cart</Button>
+				</Link>
+			</div>
+		);
+	}, [isFav]);
 
 	return (
 		<section className="w-full py-8 md:py-16 lg:py-24">
@@ -335,11 +322,7 @@ export default function ProductDetails({
 							<RatingStars />
 						</div>
 
-						<AddtocartButton
-							id={id}
-							userId={userId}
-							session={session}
-						/>
+						<AddtocartButton />
 					</div>
 				</div>
 			</div>

@@ -13,7 +13,6 @@ import {
 import { Toggle } from '../ui/Toogle';
 import { ArrowDownIcon } from '@radix-ui/react-icons';
 import { filters, categories, sortOptions } from '@/lib/data';
-import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { Categories, filterList, Sort, Values } from '@/typings';
 import { getField } from '@/lib/helper';
 
